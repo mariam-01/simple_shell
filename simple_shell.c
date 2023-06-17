@@ -42,7 +42,7 @@ pid_t child_pid;
 (void)argv;
 while (1)
 {
-printf("#cisfun$ ");
+write(STDOUT_FILENO, "#cisfun$ ", 9);
 read_bytes = read(STDIN_FILENO, buffer, BUFFER_SIZE);
 
 if (read_bytes == -1)
@@ -52,7 +52,7 @@ exit(EXIT_FAILURE);
 }
 else if (read_bytes == 0)
 {
-printf("\n");
+write(STDOUT_FILENO, "\n", 1);
 break;
 }
 
@@ -102,7 +102,8 @@ free(command_path);
 }
 else
 {
-printf("%s: command not found\n", args[0]);
+write(STDOUT_FILENO, args[0], strlen(args[0]));
+write(STDOUT_FILENO, ": command not found\n", 20);
 }
 }
 }
