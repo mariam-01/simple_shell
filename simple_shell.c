@@ -39,7 +39,7 @@ char *args[MAX_ARGS];
 ssize_t read_bytes;
 pid_t child_pid;
 (void)argc;
-(void)argv; 
+(void)argv;
 while (1)
 {
 printf("#cisfun$ ");
