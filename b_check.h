@@ -1,8 +1,6 @@
 #ifndef B_CHECK_H
 #define B_CHECK_H
 
-#define BUFFER_SIZE 1024
-#define MAX_ARGS 64
 
 /* Task 1: Command Line Interpreter */
 void execute_command_line(char *command);

@@ -42,7 +42,7 @@ pid_t child_pid;
 (void)argv; 
 while (1)
 {
-printf("$ ");
+printf("#cisfun$ ");
 read_bytes = read(STDIN_FILENO, buffer, BUFFER_SIZE);
 
 if (read_bytes == -1)
@@ -87,7 +87,7 @@ exit(EXIT_FAILURE);
 }
 else if (child_pid == 0)
 {
-/* Child process */
+
 execve(command_path, args, envp);
 perror(args[0]); /* If execve fails, print error message */
 exit(EXIT_FAILURE);
