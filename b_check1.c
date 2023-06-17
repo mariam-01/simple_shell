@@ -4,7 +4,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include "b_check.h"
-
+#define MAX_ARGS 64
 
 /* Task 1: Command Line Interpreter */
 /* Function to execute the command line */
