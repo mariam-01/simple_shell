@@ -1,58 +1,75 @@
-#include <unistd.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include "b_check.h"
-#define BUFFER_SIZE 1024
+
 /**
- * _getline - Read a line of input from a file stream
- * @lineptr: Pointer to the buffer storing the line
- * @n: Pointer to the size of the buffer
- * @stream: The file stream to read from (e.g., stdin)
- *
- * This function reads a line of input from the given file stream.
- * It dynamically allocates memory for the line buffer as needed.
- * The buffer will automatically expand to accommodate longer lines.
- * The function returns the number of characters read,
- * excluding the newline,
- * or -1 if the end of the file is reached or an error occurs.
- * Return: The number of characters read, excluding the newline,
- * or -1 if the end of the file is reached or an error occurs.
-*/
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
+ * Custom implementation of the getline function.
+ * Reads a line from the specified stream and stores it
+ * in the provided buffer.
+ * @param lineptr Pointer to the buffer where the line will be stored.
+ * @param n Pointer to the size of the buffer.
+ * @param stream The stream to read from.
+ * @return The number of characters read, or -1 on error or end-of-file.
+ */
+int _getline(char **lineptr, size_t *n, FILE *stream)
 {
-if (*lineptr == NULL) {
-*n = BUFFER_SIZE;
-*lineptr = malloc(*n);
-if (*lineptr == NULL) {
-perror("malloc");
-exit(EXIT_FAILURE);
-}
-}
-
-size_t pos = 0;
-int c;
-
-while ((c = fgetc(stream)) != EOF)
- {
-(*lineptr)[pos++] = c;
-
-if (pos >= *n) {
-*n += BUFFER_SIZE;
-*lineptr = realloc(*lineptr, *n);
-if (*lineptr == NULL)
- {
-perror("realloc");
-exit(EXIT_FAILURE);
-}
-}
-
-if (c == '\n')
-break;
-}
-
-if (pos == 0 && c == EOF)
+static char buffer[1024];
+static size_t buffer_index = 0;
+static ssize_t characters_in_buffer = 0;
+ssize_t characters_read = 0;
+char *new_line = NULL; /*Declaration of new_line*/
+if (buffer_index >= (size_t)characters_in_buffer)
+{
+/* Buffer is empty, read from stream */
+characters_read = read(fileno(stream), buffer, sizeof(buffer));
+if (characters_read == -1)
 return (-1);
+if (characters_read == 0)
+return (-1); /* EOF reached */
 
-(*lineptr)[pos] = '\0';
-return (pos);
+buffer_index = 0;
+characters_in_buffer = characters_read;
+}
+
+if ((size_t)characters_in_buffer > 0)
+{
+size_t line_index = 0;
+char *line = *lineptr;
+
+if (line == NULL || *n == 0)
+{
+*n = 128;
+line = malloc(*n * sizeof(char));
+if (line == NULL)
+return (-1); /* Memory allocation error */
+*lineptr = line;
+}
+
+while (buffer_index < (size_t)characters_in_buffer)
+{
+char current_char = buffer[buffer_index++];
+line[line_index++] = current_char;
+
+if (current_char == '\n')
+break;
+
+if (line_index == *n - 1)
+{
+*n *= 2;
+new_line = realloc(line, *n * sizeof(char));
+if (new_line == NULL)
+{
+free(line);
+return (-1); /* Memory allocation error */
+}
+line = new_line;
+*lineptr = line;
+}
+}
+
+line[line_index] = '\0';
+}
+
+return (characters_read);
 }
