@@ -1,75 +1,32 @@
+#include "header.h"
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "b_check.h"
-
 /**
- * Custom implementation of the getline function.
- * Reads a line from the specified stream and stores it
- * in the provided buffer.
- * @param lineptr Pointer to the buffer where the line will be stored.
- * @param n Pointer to the size of the buffer.
- * @param stream The stream to read from.
- * @return The number of characters read, or -1 on error or end-of-file.
+ * getline_task - Read a line from standard input.
+ *
+ * Demonstrates the usage of the getline function to read a line from
+ * the standard input. If successful, it prints the entered line.
+ * Otherwise, it prints a failure message.
  */
-int _getline(char **lineptr, size_t *n, FILE *stream)
+void getline_task(void)
 {
-static char buffer[1024];
-static size_t buffer_index = 0;
-static ssize_t characters_in_buffer = 0;
-ssize_t characters_read = 0;
-char *new_line = NULL; /*Declaration of new_line*/
-if (buffer_index >= (size_t)characters_in_buffer)
-{
-/* Buffer is empty, read from stream */
-characters_read = read(fileno(stream), buffer, sizeof(buffer));
-if (characters_read == -1)
-return (-1);
-if (characters_read == 0)
-return (-1); /* EOF reached */
+char *line = NULL;
+size_t len = 0;
+ssize_t read;
 
-buffer_index = 0;
-characters_in_buffer = characters_read;
+write(1, "Enter a line: ", 14);
+read = getline(&line, &len, stdin);
+if (read != -1)
+{
+write(1, "Getline task: Line entered: ", 28);
+write(1, line, strlen(line));
+}
+else
+{
+write(1, "Getline task: Failed to read line\n", 34);
 }
 
-if ((size_t)characters_in_buffer > 0)
-{
-size_t line_index = 0;
-char *line = *lineptr;
-
-if (line == NULL || *n == 0)
-{
-*n = 128;
-line = malloc(*n * sizeof(char));
-if (line == NULL)
-return (-1); /* Memory allocation error */
-*lineptr = line;
-}
-
-while (buffer_index < (size_t)characters_in_buffer)
-{
-char current_char = buffer[buffer_index++];
-line[line_index++] = current_char;
-
-if (current_char == '\n')
-break;
-
-if (line_index == *n - 1)
-{
-*n *= 2;
-new_line = realloc(line, *n * sizeof(char));
-if (new_line == NULL)
-{
 free(line);
-return (-1); /* Memory allocation error */
-}
-line = new_line;
-*lineptr = line;
-}
-}
-
-line[line_index] = '\0';
-}
-
-return (characters_read);
 }
