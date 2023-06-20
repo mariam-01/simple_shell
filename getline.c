@@ -1,32 +1,59 @@
-#include "header.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include <unistd.h>
-/**
- * getline_task - Read a line from standard input.
- *
- * Demonstrates the usage of the getline function to read a line from
- * the standard input. If successful, it prints the entered line.
- * Otherwise, it prints a failure message.
- */
-void getline_task(void)
-{
-char *line = NULL;
-size_t len = 0;
-ssize_t read;
+#include <stdlib.h>
+#include <string.h>
+#include "shell.h"
 
-write(1, "Enter a line: ", 14);
-read = getline(&line, &len, stdin);
-if (read != -1)
+#define BUFFER_SIZE 1024
+
+static char buffer[BUFFER_SIZE];
+static int buffer_position = 0;
+
+char* customGetline(void)
 {
-write(1, "Getline task: Line entered: ", 28);
-write(1, line, strlen(line));
+int length = 0;
+char c;
+
+while (1)
+{
+if (buffer_position == 0)
+{
+/*Read a chunk of characters into the buffer*/
+int bytes_read = read(STDIN_FILENO, buffer, BUFFER_SIZE);
+if (bytes_read <= 0)
+{
+if (length == 0)
+{
+return (NULL);  /*End of file*/
 }
 else
 {
-write(1, "Getline task: Failed to read line\n", 34);
+break;  /*End of line*/
+}
+}
 }
 
-free(line);
+c = buffer[buffer_position++];
+if (c == '\n' || c == '\r')
+{
+break;  /*End of line*/
+}
+
+/*Store character in buffer*/
+buffer[length++] = c;
+
+/*Check buffer length*/
+if (length >= BUFFER_SIZE - 1)
+{
+break;
+}
+}
+
+/*Null-terminate the buffer*/
+buffer[length] = '\0';
+
+/*Allocate memory for the line*/
+char* line = malloc((length + 1) * sizeof(char));
+strncpy(line, buffer, length + 1);
+
+return (line);
 }

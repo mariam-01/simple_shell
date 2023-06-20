@@ -1,38 +1,55 @@
-#include "header.h"
-/**
+#include <stdlib.h>
+#include <string.h>
+#include "shell.h"
+#include <stdio.h>
+#define MAX_COMMAND_LENGTH 1024
+#define MAX_ARGUMENTS 64
+#define STDOUT_FILENO 1
 
-main - entry point of the program
-This is the main function of the program. It serves as the entry point
-and executes a sequence of tasks by calling various functions defined in
-separate files. The tasks include accessing a file, changing the current
-working directory, closing a file descriptor, closing a directory, executing
-a new process, exiting the program, flushing a stream, creating a new process
-(forking), freeing allocated memory, retrieving the current working directory,
-reading input from a stream, getting the process ID, checking if a file
-descriptor refers to a terminal, sending a signal to a process, allocating
-memory dynamically, opening a file, and returning 0 to indicate successful
-execution.
-Return: Always returns 0 to indicate successful execution of the program.
-*/
 int main()
 {
-access_task();
-chdir_task();
-close_task();
-closedir_task();
-execve_task();
-exit_task();
-_exit_task();
-fflush_task();
-fork_task();
-free_task();
-getcwd_task();
-getline_task();
-getpid_task();
-isatty_task();
-kill_task();
-malloc_task();
-open_task();
+char command[MAX_COMMAND_LENGTH];
+char* arguments[MAX_ARGUMENTS];
+
+while (1)
+{
+write(STDOUT_FILENO, "$ ", 2);
+
+/*Read command from the user*/
+if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
+{
+/*Handle end of file (Ctrl+D)*/
+write(STDOUT_FILENO, "\n", 1);
+executeExit();
+}
+
+/*Tokenize the command*/
+tokenizeCommand(command, arguments);
+
+/*Check for built-in commands*/
+if (strcmp(arguments[0], "ls") == 0)
+{
+if (arguments[1] == NULL)
+executeLs(arguments);
+else if (strcmp(arguments[1], "-l") == 0 && arguments[2] != NULL)
+executeLsDetailed(arguments);
+else
+write(STDOUT_FILENO, "Invalid arguments for ls command\n", 32);
+}
+else if (strcmp(arguments[0], "exit") == 0)
+{
+executeExit();
+}
+else if (strcmp(arguments[0], "env") == 0)
+{
+printEnvironment();
+}
+else
+{
+write(STDOUT_FILENO, "Command not found: ", 19);
+write(STDOUT_FILENO, arguments[0], strlen(arguments[0]));
+write(STDOUT_FILENO, "\n", 1);
+}
+}
 
 return (0);
-}
