@@ -5,9 +5,9 @@
 #include <string.h>
 #include "shell.h"
 #include <stdlib.h>
-void tokenizeCommand(char* command, char** arguments)
+void tokenizeCommand(char *command, char **arguments)
 {
-char *token ;
+char *token;
 int i = 0;
 token = strtok(command, " \t\n");
 while (token != NULL)
@@ -19,7 +19,7 @@ token = strtok(NULL, " \t\n");
 arguments[i] = NULL;
 }
 
-void executeLs(char** arguments)
+void executeLs(char **arguments)
 {
 pid_t pid = fork();
 if (pid < 0)
@@ -41,7 +41,7 @@ wait(NULL);
 }
 }
 
-void executeLsDetailed(char** arguments)
+void executeLsDetailed(char **arguments)
 {
 pid_t pid = fork();
 if (pid < 0)
@@ -70,8 +70,8 @@ exit(EXIT_SUCCESS);
 
 void printEnvironment(void)
 {
-extern char** environ;
-char** env = environ;
+extern char **environ;
+char **env = environ;
 while (*env)
 {
 write(STDOUT_FILENO, *env, strlen(*env));
@@ -79,3 +79,4 @@ write(STDOUT_FILENO, "\n", 1);
 env++;
 }
 }
+
