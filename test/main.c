@@ -46,6 +46,7 @@ write(STDOUT_FILENO, "Command not found: ", 19);
 write(STDOUT_FILENO, arguments[0], _strlen(arguments[0]));
 write(STDOUT_FILENO, "\n", 1);
 }
+free(command);
 }
 return (0);
 }
