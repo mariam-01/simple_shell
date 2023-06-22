@@ -71,7 +71,7 @@ exit(EXIT_SUCCESS);
 
 void printEnvironment(void)
 {
-char **environ;
+extern char **environ;
 char **env = environ;
 while (*env)
 {

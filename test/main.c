@@ -16,7 +16,7 @@ char* arguments[MAX_ARGUMENTS];
 while (1)
 {
 write(STDOUT_FILENO, "$ ", 2);/*Read command from the user*/
-if (getline(&command, &command_length, stdin))
+if (getline(&command, &command_length, stdin) == -1)
 /*Handle end of file (Ctrl+D)*/
 {
 write(STDOUT_FILENO, "\n", 1);
