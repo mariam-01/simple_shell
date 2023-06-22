@@ -12,7 +12,7 @@ char* customGetline(void)
 {
 int length = 0;
 char c;
-
+char* line = malloc((length + 1) * sizeof(char));
 while (1)
 {
 if (buffer_position == 0)
@@ -52,7 +52,6 @@ break;
 buffer[length] = '\0';
 
 /*Allocate memory for the line*/
-char* line = malloc((length + 1) * sizeof(char));
 strncpy(line, buffer, length + 1);
 
 return (line);

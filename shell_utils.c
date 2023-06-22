@@ -63,9 +63,10 @@ wait(NULL);
 }
 }
 
-void executeExit()
+void executeExit(int status)
 {
-exit(EXIT_SUCCESS);
+(void)status; 
+exit(status);
 }
 
 void printEnvironment(void)
