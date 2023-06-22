@@ -6,6 +6,7 @@
 #include "shell.h"
 #include <stdlib.h>
 
+
 void tokenizeCommand(char *command, char **arguments)
 {
 char *token;
@@ -71,7 +72,7 @@ exit(EXIT_SUCCESS);
 
 void printEnvironment(void)
 {
-extern char **environ;
+/*extern char **environ;*/
 char **env = environ;
 while (*env)
 {

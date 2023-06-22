@@ -10,9 +10,9 @@
 
 int main(void)
 {
-char* command = NULL;
+char *command = NULL;
 size_t command_length = 0;
-char* arguments[MAX_ARGUMENTS];
+char *arguments[MAX_ARGUMENTS];
 while (1)
 {
 write(STDOUT_FILENO, "$ ", 2);/*Read command from the user*/
