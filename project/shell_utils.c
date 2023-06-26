@@ -1,10 +1,11 @@
-#include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
 #include "shell.h"
 #include <stdlib.h>
+#include <stdio.h>
+
 void tokenizeCommand(char *command, char **arguments)
 {
 char *token;
@@ -30,7 +31,8 @@ return;
 else if (pid == 0)
 {
 /*Child process*/
-execve("/bin/ls", arguments, NULL);
+arguments[0] = "/bin/ls";
+execve(arguments[0], arguments, NULL);
 perror("execve() failed");
 _exit(EXIT_FAILURE);
 }
