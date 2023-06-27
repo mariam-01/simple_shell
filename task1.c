@@ -33,7 +33,7 @@ str[strcspn(str, "\n")] = '\0';
 void executeCommand(char *command)
 {
 pid_t pid = fork();
-extern char **environ;
+char **environ;
 if (pid == -1)
 {
 perror("fork");
