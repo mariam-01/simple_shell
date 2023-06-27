@@ -7,6 +7,8 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #define BUFFER_SIZE 1024
+
+
 /**
 * displayPrompt - Displays the shell prompt
 */
@@ -14,6 +16,7 @@ void displayPrompt(void)
 {
 write(STDOUT_FILENO, "#cisfun$ ", 9);
 }
+
 /**
 * removeNewline - Removes the newline character from a string
 * @str: The string to modify
@@ -22,6 +25,7 @@ void removeNewline(char *str)
 {
 str[strcspn(str, "\n")] = '\0';
 }
+
 /**
 * executeCommand - Executes a command in the shell
 * @command: The command to execute
@@ -29,7 +33,7 @@ str[strcspn(str, "\n")] = '\0';
 void executeCommand(char *command)
 {
 pid_t pid = fork();
-
+extern char **environ;
 if (pid == -1)
 {
 perror("fork");
@@ -37,10 +41,13 @@ exit(EXIT_FAILURE);
 }
 else if (pid == 0)
 {
+char **args = malloc(sizeof(char *) * 2);
+args[0] = command;
+args[1] = NULL;
 
-execlp(command, command, NULL);
+execve(command, args, environ);
 
-/*exec returned, meaning the command was not found*/
+/* execve returned, meaning the command was not found */
 write(STDOUT_FILENO, "./shell: No such file or directory\n", 35);
 exit(EXIT_FAILURE);
 }
