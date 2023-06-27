@@ -15,7 +15,7 @@ size_t bufsize = 0;
 ssize_t linesize = 0;
 char **command = NULL;
 char **paths = NULL;
-(void)env, argv;
+(void)env, (void)argv;
 if (argc < 1)
 return (-1);
 signal(SIGINT, handle_interactive_signal);
