@@ -69,14 +69,14 @@ exit(EXIT_FAILURE);
 }
 
 if (bytesRead == 0)
-break;
+continue;
 
 removeNewline(command);
 
 if (strcmp(command, "exit") == 0)
 {
 write(STDOUT_FILENO, "./shell: No such file or directory\n", 35);
-break;
+continue;
 }
 
 if (strcmp(command, "/bin/ls") == 0)
