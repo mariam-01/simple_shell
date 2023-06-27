@@ -24,9 +24,11 @@ index++;
 return (NULL);
 }
 /**
- * check_access - checks if a file or directory exists and has the specified mode of access
+ * check_access - checks if a file or directory exists
+ * and has the specified mode of access
  * @path: path to the file or directory
- * @mode: mode of access to be checked (e.g., F_OK for existence, R_OK for read access, etc.)
+ * @mode: mode of access to be checked (e.g., F_OK for
+ * existence, R_OK for read access, etc.)
  *
  * Return: 0 if the access check succeeds, -1 if it fails
  */

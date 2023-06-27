@@ -8,7 +8,7 @@
 void output_environment(void)
 {
 char **env = environ;
-int i ;
+int i;
 for (i = 0; env[i] != NULL; i++)
 {
 char *current_env = env[i];

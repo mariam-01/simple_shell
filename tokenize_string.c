@@ -25,7 +25,7 @@ while (token)
 if (index >= bufferSize)
 {
 bufferSize += TOKEN_BUFFER_SIZE;
-tokens = realloc(tokens, bufferSize * sizeof(CharPtrPtr));
+tokens = realloc(tokens, bufferSize * (sizeof(CharPtrPtr)));
 if (!tokens)
 return (NULL);
 }
