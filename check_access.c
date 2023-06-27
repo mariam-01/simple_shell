@@ -14,12 +14,23 @@ char *result;
 
 while (path_tokens[index])
 {
-result = combine_path_command(path_tokens[index], command);
-if (check_access(result, F_OK | X_OK) == 0)
+result = concatenate_path(path_tokens[index], command);
+if (result != NULL && check_access(result, F_OK | X_OK) == 0)
 return (result);
 free(result);
 index++;
 }
 
 return (NULL);
+}
+/**
+ * check_access - checks if a file or directory exists and has the specified mode of access
+ * @path: path to the file or directory
+ * @mode: mode of access to be checked (e.g., F_OK for existence, R_OK for read access, etc.)
+ *
+ * Return: 0 if the access check succeeds, -1 if it fails
+ */
+int check_access(const char *path, int mode)
+{
+return (access(path, mode));
 }

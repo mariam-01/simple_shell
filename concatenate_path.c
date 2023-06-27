@@ -8,21 +8,19 @@
 */
 char *concatenate_path(char *path, char *command)
 {
-size_t path_len = _strlen(path);
-size_t command_len = _strlen(command);
+size_t path_len = custom_strlen(path);
+size_t command_len = custom_strlen(command);
 size_t total_len = path_len + command_len + 2;
-
+char *buf = malloc(sizeof(char) * total_len);
+char *p = buf;
 if (command == NULL)
 command = "";
 
 if (path == NULL)
 path = "";
-
-char *buf = malloc(sizeof(char) * total_len);
 if (buf == NULL)
 return (NULL);
 
-char *p = buf;
 
 while (*path)
 *p++ = *path++;

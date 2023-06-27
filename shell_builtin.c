@@ -9,18 +9,15 @@
 */
 int execute_builtin_command(char **command, char *input_line)
 {
-if (is_builtin_command(*command))
+if (strcmp(command[0], "env") == 0)
 {
-if (strcmp(*command, "env") == 0)
-{
-print_env();
+output_environment();
 return (1);
 }
-else if (strcmp(*command, "exit") == 0)
+else if (strcmp(command[0], "exit") == 0)
 {
-exit_cmd(command, input_line);
+handle_exit_command(command, input_line);
 return (1);
-}
 }
 
 return (0);

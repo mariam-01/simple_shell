@@ -24,15 +24,15 @@ char **paths = NULL;
 if (argc < 1)
 return (-1);
 
-signal(SIGINT, handle_signal);
+signal(SIGINT, handle_interactive_signal);
 
 while (1)
 {
-free_buffers(command);
-free_buffers(paths);
+deallocate_buffers(command);
+deallocate_buffers(paths);
 free(resolved_path);
 
-prompt_user();
+display_shell_prompt();
 
 linesize = getline(&line, &bufsize, stdin);
 
@@ -44,22 +44,22 @@ info.ln_count++;
 if (line[linesize - 1] == '\n')
 line[linesize - 1] = '\0';
 
-command = tokenizer(line);
+command = tokenize_input(line);
 
 if (command == NULL || *command == NULL || **command == '\0')
 continue;
 
-if (checker(command, line))
+if (check_and_execute (command, line))
 continue;
 
-path = find_path();
-paths = tokenizer(path);
-resolved_path = test_path(paths, command[0]);
+path = get_path_from_env();
+paths = tokenize_input(path);
+resolved_path = search_valid_path(paths, command[0]);
 
 if (!resolved_path)
 perror(argv[0]);
 else
-execution(resolved_path, command);
+run_command(resolved_path, command);
 }
 
 if (linesize < 0 && flags.interactive)

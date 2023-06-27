@@ -11,7 +11,7 @@
 void handle_exit_command(char **command, char *line)
 {
 free(line);
-free_buffers(command);
+deallocate_buffers(command);
 exit(0);
 }
 

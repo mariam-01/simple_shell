@@ -5,7 +5,8 @@
 * @str1: first string
 * @str2: second string
 *
-* Return: 0 if the strings are equal, a negative value if str1 is less than str2,
+* Return: 0 if the strings are equal, a negative value
+* if str1 is less than str2,
 *         or a positive value if str1 is greater than str2
 */
 int compare_strings(char *str1, char *str2)
@@ -16,7 +17,7 @@ str1++;
 str2++;
 }
 
-return (int)(*str1 - *str2);
+return ((int)(*str1 - *str2));
 }
 /**
 * custom_strlen - returns the length of a string
@@ -47,7 +48,7 @@ int length, i;
 if (source == NULL)
 return (NULL);
 
-length = _strlen(source);
+length = custom_strlen(source);
 
 duplicate = malloc(sizeof(char) * (length + 1));
 if (duplicate == NULL)
@@ -70,7 +71,8 @@ return (duplicate);
 */
 char *find_character(char *string, char character)
 {
-for (; *string != '\0' && *string != character; string++);
+for (; *string != '\0' && *string != character; string++)
+;
 
 if (*string == character)
 return (string);

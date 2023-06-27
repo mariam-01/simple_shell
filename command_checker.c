@@ -1,7 +1,8 @@
 #include "shell.h"
 
 /**
-* check_and_execute - checks whether it's a built-in function or executes a command
+* check_and_execute - checks whether it's a built-in
+* function or executes a command
 * @cmd: tokenized user input
 * @buf: line derived from getline function
 *
@@ -9,12 +10,12 @@
 */
 int check_and_execute(char **cmd, char *buf)
 {
-if (handle_builtin(cmd, buf))
+if (execute_builtin_command(cmd, buf))
 return (1);
 
 if (cmd[0][0] == '/')
 {
-execution(cmd[0], cmd);
+run_command(cmd[0], cmd);
 return (1);
 }
 

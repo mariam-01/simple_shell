@@ -11,7 +11,7 @@ char *path = NULL;
 
 while (*env != NULL)
 {
-if (_strncmp(*env, "PATH=", 5) == 0)
+if (custom_strncmp(*env, "PATH=", 5) == 0)
 {
 path = *env + 5;
 break;

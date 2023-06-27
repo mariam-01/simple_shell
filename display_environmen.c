@@ -12,7 +12,7 @@ int i ;
 for (i = 0; env[i] != NULL; i++)
 {
 char *current_env = env[i];
-int len = _strlen(current_env);
+int len = custom_strlen(current_env);
 
 write(STDOUT_FILENO, current_env, len);
 write(STDOUT_FILENO, "\n", 1);
