@@ -1,6 +1,6 @@
 /*
  * File: main.c
- * Auth: Mouna Menouer 
+ * Auth: Mouna Menouer
  *       Meriem
  */
 

@@ -16,5 +16,6 @@
 void display_prompt(void);
 void remove_newline(char *buffer);
 void execute_command(char *command);
-
+int find_command_path(char *command, char *path, char *command_path);
+void run_executable(char *command, char *command_path);
 #endif /* SHELL_H */
