@@ -24,14 +24,7 @@ char *_getenv(const char *name)
  *
  * Return: 0 on success
  */
-int _env(void)
-{
-	int i;
 
-	for (i = 0; environ[i]; i++)
-		_puts(environ[i]);
-	return (0);
-}
 /**
  * _puts - prints a string
  * @str: string to print
