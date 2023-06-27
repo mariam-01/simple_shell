@@ -85,4 +85,5 @@ else
 /* Parent process */
  wait(NULL);
 }
+free(command_path);
 }
