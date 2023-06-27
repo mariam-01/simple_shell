@@ -1,36 +1,19 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/types.h>
-#include <sys/wait.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <string.h>
 #include "shell.h"
 #define BUFFER_SIZE 1024
-
 /**
-* main - Entry point of the simple shell program
-*
-* Return: Always returns 0.
-*/
+ * main - The entry point of the shell program
+ *
+ * Return: 0 on successful execution
+ */
 int main(void)
 {
-char *buffer = NULL;
-
-while (1)
-{
-display_prompt();
-buffer = read_command();
-
-if (strcmp(buffer, "exit") == 0)
-{
-break; /* Handle exit command */
+shell();
+return (0);
 }
-
-execute_command(buffer);
-cleanup(buffer);
-}
-
-return (EXIT_SUCCESS);
-}
-

@@ -1,91 +1,87 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/types.h>
-#include <sys/wait.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <string.h>
-#include "shell.h"
-#include <stdio.h>
-
+#include <sys/wait.h>
+#define BUFFER_SIZE 1024
 /**
- * Displays the prompt.
- */
-void display_prompt(void)
+* displayPrompt - Displays the shell prompt
+*/
+void displayPrompt(void)
 {
 write(STDOUT_FILENO, "#cisfun$ ", 9);
 }
 /**
- * read_command - Reads the command entered by the user.
- * Returns: the dynamically allocated buffer containing the command.
- */
-char *read_command(void)
+* removeNewline - Removes the newline character from a string
+* @str: The string to modify
+*/
+void removeNewline(char *str)
 {
-char *buffer = NULL;
-size_t bufsize = 0;
-ssize_t characters_read;
-
-characters_read = getline(&buffer, &bufsize, stdin);
-
-if (characters_read == -1)
-{
-if (feof(stdin))
-{
-write(STDOUT_FILENO, "\n", 1); /* Handle end of file (Ctrl+D) */
-}
-else
-{
-perror("getline");
-}
-
-exit(EXIT_FAILURE);
-}
-
-buffer[characters_read - 1] = '\0'; /* Remove newline character */
-
-return (buffer);
+str[strcspn(str, "\n")] = '\0';
 }
 /**
- * Executes the given command.
- * @param command The command to execute.
- */
-void execute_command(char *command)
+* executeCommand - Executes a command in the shell
+* @command: The command to execute
+*/
+void executeCommand(char *command)
 {
-pid_t child_pid;
-int status;
+pid_t pid = fork();
 
-child_pid = fork(); /* Create a child process */
-
-if (child_pid == -1)
+if (pid == -1)
 {
 perror("fork");
 exit(EXIT_FAILURE);
 }
-
-if (child_pid == 0)
+else if (pid == 0)
 {
-/* Child process */
-char **args = malloc(2 * sizeof(char *));
-args[0] = command;
-args[1] = NULL;
-execve(command, args, NULL); /* Execute the command */
 
-/* execve returns only if an error occurs */
-perror("execve");
-free(args);
+execlp(command, command, NULL);
+
+/*exec returned, meaning the command was not found*/
+write(STDOUT_FILENO, "./shell: No such file or directory\n", 35);
 exit(EXIT_FAILURE);
 }
 else
 {
-/* Parent process */
-waitpid(child_pid, &status, 0); /* Wait for the child process to finish */
+wait(NULL);
 }
 }
 /**
- * Cleans up the dynamically allocated memory.
- * @param buffer The buffer to free.
- */
-void cleanup(char *buffer)
+* shell - The main loop for the shell
+*/
+void shell(void)
 {
-free(buffer);
+char command[BUFFER_SIZE];
+ssize_t bytesRead;
+
+while (1)
+{
+displayPrompt();
+
+bytesRead = read(STDIN_FILENO, command, BUFFER_SIZE);
+if (bytesRead == -1)
+{
+perror("read");
+exit(EXIT_FAILURE);
+}
+
+if (bytesRead == 0)
+break;
+
+removeNewline(command);
+
+if (strcmp(command, "exit") == 0)
+{
+write(STDOUT_FILENO, "./shell: No such file or directory\n", 35);
+break;
+}
+
+if (strcmp(command, "/bin/ls") == 0)
+executeCommand(command);
+else
+write(STDOUT_FILENO, "./shell: No such file or directory\n", 35);
+}
 }
