@@ -1,85 +1,76 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <string.h>
 #include "shell.h"
-#include <stdlib.h>
 
-
-void tokenizeCommand(char *command, char **arguments)
+/**
+ * isshellinteractive - checks if the shell is in interactive mode
+ *
+ * Returns:
+ *   - 1 if the shell is in interactive mode
+ *   - 0 otherwise
+ */
+int isshellinteractive(void)
 {
-char *token;
-int i = 0;
-token = strtok(command, " \t\n");
-while (token != NULL)
-{
-arguments[i] = token;
-i++;
-token = strtok(NULL, " \t\n");
-}
-arguments[i] = NULL;
+    return (fcntl(STDIN_FILENO, F_GETFL) != -1);
 }
 
-void executeLs(char **arguments)
-{
-pid_t pid = fork();
-if (pid < 0)
-{
-perror("fork() failed");
-return;
-}
-else if (pid == 0)
-{
-/*Child process*/
-execve("/bin/ls", arguments, NULL);
-perror("execve() failed");
-_exit(EXIT_FAILURE);
-}
-else
-{
-/*Parent process*/
-wait(NULL);
-}
+/**
+ *isCharacterSeparator: checks if a character is a separator
+ *@c: the character to check
+ *@separators: a string of separators
+ *
+ * Returns:
+ *   - 1 if the character is a separator
+ *   - 0 otherwise
+ */
+int isCharacterSeparator(char c, const char *separators)
+for (; *separators != '\0'; separators++)
+    {
+        if (*separators == c)
+            return 1;
+    }
+return :0;
 }
 
-void executeLsDetailed(char **arguments)
+/**
+ * int isCharacterAlphabetic - checks if a character is an alphabetic character
+ *
+ * Parameters:
+ * @c: the character to check
+ *
+ * Returns:
+ *  1 if the character is an alphabetic character
+ *  0 otherwise
+ */
+int isCharacterAlphabetic(int c)
 {
-pid_t pid = fork();
-if (pid < 0)
-{
-perror("fork() failed");
-return;
-}
-else if (pid == 0)
-{
-/*Child process*/
-execve("/bin/ls", arguments, NULL);
-perror("execve() failed");
-_exit(EXIT_FAILURE);
-}
-else
-{
-/*Parent process*/
-wait(NULL);
-}
+return (isalpha(c) != 0);
 }
 
-void executeExit(void)
-{
-exit(EXIT_SUCCESS);
-}
+/**
+ *convertStringToInt:converts a string to an integer
+ * @str: the string to be converted
+ * Returns:
+ *   - the converted integer value
+ *   - 0 if the string does not contain any numbers
+ */
+int convertStringToInt(const char *str)
+int result = 0;
+    int sign = 1;
 
-void printEnvironment(void)
-{
-/*extern char **environ;*/
-char **env = environ;
-while (*env)
-{
-write(STDOUT_FILENO, *env, _strlen(*env));
-write(STDOUT_FILENO, "\n", 1);
-env++;
-}
-}
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        if (isdigit(str[i]))
+        {
+            result = result * 10 + (str[i] - '0');
+        }
+        else if (i == 0 && str[i] == '-')
+        {
+            sign = -1;
+        }
+        else
+        {
+            break;
+        }
+    }
 
-
+    return sign * result;
+}
