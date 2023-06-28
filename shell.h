@@ -59,4 +59,5 @@ struct flags
 {
 bool interactive;
 } flags;
+
 #endif /* SHELL_H */
