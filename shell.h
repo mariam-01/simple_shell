@@ -37,6 +37,7 @@ char *combine_path_command(char *path, char *command);
 int check_access(const char *path, int mode);
 void deallocate_buffers(char **buffers);
 int check_access(const char *path, int mode);
+
 /**
  *struct info - a structure
  *@final_exit: integer
