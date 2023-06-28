@@ -12,7 +12,7 @@
 #include <time.h>
 #include <stdbool.h>
 #define TOKEN_BUFFER_SIZE 256
-typedef char** CharPtrPtr;
+typedef char **CharPtrPtr;
 
 extern char **environ;
 extern __sighandler_t signal(int __sig, __sighandler_t __handler);
@@ -37,11 +37,22 @@ char *combine_path_command(char *path, char *command);
 int check_access(const char *path, int mode);
 void deallocate_buffers(char **buffers);
 int check_access(const char *path, int mode);
+/**
+ *struct info - a structure
+ *@final_exit: integer
+ *@ln_count: integer
+ * Return: 0
+ */
 struct info
 {
 int final_exit;
 int ln_count;
 } info;
+/**
+ *struct flags - a structure
+ *@interactive: booleen
+ * Return: 0
+ */
 
 struct flags
 {
