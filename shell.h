@@ -48,6 +48,7 @@ struct info
 int final_exit;
 int ln_count;
 } info;
+
 /**
  *struct flags - a structure
  *@interactive: booleen
